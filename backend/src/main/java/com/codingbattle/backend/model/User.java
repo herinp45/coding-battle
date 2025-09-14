@@ -15,9 +15,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "users")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 /**
  * User entity
  */
@@ -75,7 +72,7 @@ public class User {
     /**
      * User constructor with id
      */
-    public User(String id, String username, String email, String password, String role) {
+    public User(Long id, String username, String email, String password, String role) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -86,7 +83,7 @@ public class User {
     /**
      * Get username
      */
-    public getUsername() {
+    public String getUsername() {
         return username;
     }
 
