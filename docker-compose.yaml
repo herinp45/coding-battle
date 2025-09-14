@@ -5,8 +5,10 @@ services:
     image: postgres:15
     container_name: codingbattle-db
     restart: always
-    env_file:
-      - .env.docker
+    environment:
+      POSTGRES_DB: codingbattle
+      POSTGRES_USER: battleuser
+      POSTGRES_PASSWORD: battlepass
     ports:
       - "5432:5432"
     volumes:
