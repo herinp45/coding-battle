@@ -2,6 +2,9 @@ package com.codingbattle.backend.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import com.codingbattle.backend.repository.UserRepo;
+import com.codingbattle.backend.dto.UserMapper;
+import com.codingbattle.backend.dto.UserRequestDTO;
+import com.codingbattle.backend.model.User;
 
 public class UserService {
 
