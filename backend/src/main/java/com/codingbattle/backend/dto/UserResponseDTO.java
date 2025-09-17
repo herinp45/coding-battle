@@ -1,93 +1,40 @@
 package com.codingbattle.backend.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Min;
+import lombok.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
- * User Response Data Transfer Object (without password)
+ * User Response Data Transfer Object (safe to return in API responses)
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 public class UserResponseDTO {
-    
-    private Long id;
-    
-    @NotBlank(message = "Username is required")
+
+    private UUID id;
+
     private String username;
-    
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+
     private String email;
-    
-    @NotBlank(message = "Role is required")
-    private String role;
-    
-    @NotNull(message = "Rating is required")
-    @Min(value = 0, message = "Rating must be greater than or equal to 0")
+
     private Integer rating;
 
-    // Default constructor
-    public UserResponseDTO() {
-    }
+    private Integer wins;
 
-    // Constructor with all fields
-    public UserResponseDTO(Long id, String username, String email, String role, Integer rating) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.role = role;
-        this.rating = rating;
-    }
+    private Integer losses;
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+    private Boolean isOnline;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private LocalDateTime createdAt;
 
-    public String getUsername() {
-        return username;
-    }
+    /**
+     * Derived field: win rate %
+     */
+    private Double winRate;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    @Override
-    public String toString() {
-        return "UserResponseDTO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                ", rating=" + rating +
-                '}';
-    }
+    private Integer totalGames;
 }

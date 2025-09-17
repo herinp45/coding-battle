@@ -1,160 +1,74 @@
 package com.codingbattle.backend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Builder
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        indexes = {
+                @Index(name = "idx_users_username", columnList = "username"),
+                @Index(name = "idx_users_rating", columnList = "rating DESC")
+        }
+)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
-    /**
-     * User id
-     */
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    /**
-     * User username
-     */
-    @Column(unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
+
+    @Column(name = "username", unique = true, nullable = false, length = 50)
     private String username;
-    /**
-     * User email
-     */
-    @Column(unique = true, nullable = false)
+
+    @Column(name = "email", unique = true, nullable = false, length = 255)
     private String email;
-    /**
-     * User password
-     */
-    @Column(nullable = false)
-    private String password;
-    /**
-     * User role
-    */
-    @Column(nullable = false)
-    private String role;
-    /**
-     * User rating (ELO rating)
-    */
+
+    @Column(name = "password_hash", nullable = false, length = 255)
+    private String passwordHash;
+
     @Builder.Default
-    @Column(nullable = false)
+    @Column(name = "rating", nullable = false)
     private Integer rating = 1200;
 
+    @Builder.Default
+    @Column(name = "wins", nullable = false)
+    private Integer wins = 0;
+
+    @Builder.Default
+    @Column(name = "losses", nullable = false)
+    private Integer losses = 0;
+
+    @Builder.Default
+    @Column(name = "is_online", nullable = false)
+    private Boolean isOnline = false;
+
+    @Builder.Default
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     /**
-     * User empty constructor
+     * Calculate win rate percentage
      */
-    public User() {
-    }
-
-    /**
-     * User constructor with username, email, password, role
-     */
-    public User(String username, String email, String password, String role) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-     
-    /**
-     * User constructor with id
-     */
-    public User(Long id, String username, String email, String password, String role) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-    
-    /**
-     * Get username
-     */
-    public String getUsername() {
-        return username;
+    public Double getWinRate() {
+        int totalGames = wins + losses;
+        if (totalGames == 0) {
+            return 0.0;
+        }
+        return (double) wins / totalGames * 100.0;
     }
 
     /**
-     * Set username
+     * Get total games played
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public Integer getTotalGames() {
+        return wins + losses;
     }
-
-    /**
-     * Get email
-     */
-    public String getEmail() {
-        return email;
-    }
-    /**
-     * Set email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Get password
-     */
-    public String getPassword() {
-        return password;
-    }
-    /**
-     * Set password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * Get role
-     */
-    public String getRole() {
-        return role;
-    }
-    /**
-     * Set role
-     */
-    public void setRole(String role) {
-        this.role = role;
-    }
-    /**
-     * Get rating
-     */
-    public Integer getRating() {
-        return rating;
-    }
-    /**
-     * Set rating
-     */
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-    /**
-     * Get id
-     */
-    public Long getId() {
-        return id;
-    }
-    /**
-     * Set id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
 }
-
-
