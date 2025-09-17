@@ -2,7 +2,9 @@ package com.codingbattle.backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.codingbattle.backend.model.User;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
     /**
@@ -23,8 +25,4 @@ public interface UserRepo extends JpaRepository<User, Long> {
      */
     Boolean existsByEmail(String email);
 
-    /**
-     * Find user by id
-     */
-    User findById(Long id);
 }

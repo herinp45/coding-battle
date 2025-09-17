@@ -1,11 +1,16 @@
-package com.codingbattle.backend.security;
+package com.codingbattle.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import com.codingbattle.backend.repository.UserRepo;
 import com.codingbattle.backend.dto.UserMapper;
 import com.codingbattle.backend.dto.UserRequestDTO;
 import com.codingbattle.backend.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
+@Service
 public class UserService {
 
     /**
@@ -31,14 +36,15 @@ public class UserService {
     
     /**
      * Find user by id
+     *
      * @param id User id
      * @return User
      */
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         return userRepo.findById(id);
     }
 
-    public User findAll() {
+    public List<User> findAll() {
         return userRepo.findAll();
     }
 
@@ -48,7 +54,7 @@ public class UserService {
      * @return User
      */
     public User save(UserRequestDTO user) {
-        User userEntity = userMapper.toEntity(user);
+        User userEntity = UserMapper.toEntity(user);
         return userRepo.save(userEntity);
     }
 }

@@ -1,10 +1,12 @@
 package com.codingbattle.backend.dto;
 
 import com.codingbattle.backend.model.User;
+import org.springframework.stereotype.Component;
 
 /**
  * Mapper utility class for converting between User entity and DTOs
  */
+@Component
 public class UserMapper {
 
     /**

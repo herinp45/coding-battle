@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@Builder
 @Entity
 @Table(name = "users")
-/**
- * User entity
- */
 public class User {
     /**
      * User id

@@ -3,7 +3,7 @@ package com.codingbattle.backend.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Min;
 
 /**
  * User Response Data Transfer Object (without password)
@@ -23,7 +23,7 @@ public class UserResponseDTO {
     private String role;
     
     @NotNull(message = "Rating is required")
-    @PositiveOrZero(message = "Rating must be positive or zero")
+    @Min(value = 0, message = "Rating must be greater than or equal to 0")
     private Integer rating;
 
     // Default constructor
