@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.codingbattle.backend.model.User;
-import com.codingbattle.backend.service.UserService;
 import com.codingbattle.backend.dto.UserRequestDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

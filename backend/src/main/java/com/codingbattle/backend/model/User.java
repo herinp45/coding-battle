@@ -10,7 +10,7 @@ import java.util.UUID;
         name = "users",
         indexes = {
                 @Index(name = "idx_users_username", columnList = "username"),
-                @Index(name = "idx_users_rating", columnList = "rating DESC")
+                @Index(name = "idx_users_rating", columnList = "rating")
         }
 )
 @Getter
@@ -31,7 +31,7 @@ public class User {
     @Column(name = "email", unique = true, nullable = false, length = 255)
     private String email;
 
-    @Column(name = "password_hash", nullable = false, length = 255)
+    @Column(name = "password", nullable = false, length = 255)
     private String passwordHash;
 
     @Builder.Default
@@ -50,25 +50,28 @@ public class User {
     @Column(name = "is_online", nullable = false)
     private Boolean isOnline = false;
 
-    @Builder.Default
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    /**
-     * Calculate win rate percentage
-     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
+    @Builder.Default
+    private Role role = Role.USER;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
     public Double getWinRate() {
         int totalGames = wins + losses;
-        if (totalGames == 0) {
-            return 0.0;
-        }
+        if (totalGames == 0) return 0.0;
         return (double) wins / totalGames * 100.0;
     }
 
-    /**
-     * Get total games played
-     */
     public Integer getTotalGames() {
         return wins + losses;
     }
+
+    public enum Role { USER, ADMIN }
 }

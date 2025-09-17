@@ -12,54 +12,50 @@ public class UserMapper {
     /**
      * Convert User entity to UserResponseDTO (without password)
      */
-    public static UserResponseDTO toResponseDTO(User user) {
-        if (user == null) {
-            return null;
-        }
-        
-        return new UserResponseDTO(
-            user.getId(),
-            user.getUsername(),
-            user.getEmail(),
-            user.getRole(),
-            user.getRating()
-        );
+    public UserResponseDTO toResponseDTO(User user) {
+        if (user == null) return null;
+
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .rating(user.getRating())
+                .wins(user.getWins())
+                .losses(user.getLosses())
+                .isOnline(user.getIsOnline())
+                .createdAt(user.getCreatedAt())
+                .winRate(user.getWinRate())
+                .totalGames(user.getTotalGames())
+                .build();
     }
 
     /**
      * Convert UserRequestDTO to User entity (for creation)
+     * (Note: password hashing should happen in service layer, not here)
      */
-    public static User toEntity(UserRequestDTO userRequestDTO) {
-        if (userRequestDTO == null) {
-            return null;
-        }
-        
-        User user = new User();
-        user.setUsername(userRequestDTO.getUsername());
-        user.setEmail(userRequestDTO.getEmail());
-        user.setPassword(userRequestDTO.getPassword());
-        user.setRole(userRequestDTO.getRole());
-        user.setRating(1200); // Default rating for new users
-        
-        return user;
+    public User toEntity(UserRequestDTO dto) {
+        if (dto == null) return null;
+
+        return User.builder()
+                .username(dto.getUsername())
+                .email(dto.getEmail())
+                .passwordHash(dto.getPassword()) // Hash in service layer!
+                .rating(1200)
+                .build();
     }
 
     /**
      * Update existing User entity with UserRequestDTO
+     * (Only username/email here — password/role should be handled in service)
      */
-    public static void updateEntity(User existingUser, UserRequestDTO userRequestDTO) {
-        if (existingUser == null || userRequestDTO == null) {
-            return;
+    public void updateEntity(User user, UserRequestDTO dto) {
+        if (user == null || dto == null) return;
+
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            user.setPasswordHash(dto.getPassword()); // Hash in service layer!
         }
-        
-        existingUser.setUsername(userRequestDTO.getUsername());
-        existingUser.setEmail(userRequestDTO.getEmail());
-        
-        // Only update password if provided
-        if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().trim().isEmpty()) {
-            existingUser.setPassword(userRequestDTO.getPassword());
-        }
-        
-        existingUser.setRole(userRequestDTO.getRole());
     }
 }
