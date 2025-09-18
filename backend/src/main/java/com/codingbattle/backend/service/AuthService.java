@@ -49,6 +49,14 @@ public class AuthService {
     }
 
 
+
+    /**
+     * Registers a new user.
+     *
+     * @param userRequestDTO contains the user details
+     * @return UserResponseDTO containing the registered user's details
+     * @throws RuntimeException if the username or email already exists
+     */
     public UserResponseDTO register(UserRequestDTO userRequestDTO){
         if (userRepo.existsByUsername(userRequestDTO.getUsername())) {
             throw new RuntimeException("Username is already taken");
@@ -61,5 +69,21 @@ public class AuthService {
         user.setPasswordHash(passwordEncoder.encode(userRequestDTO.getPassword()));
         userRepo.save(user);
         return userMapper.toResponseDTO(user);
+    }
+
+    /**
+     * Authenticates a user and generates a JWT token.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return a JWT token if authentication is successful
+     * @throws RuntimeException if authentication fails
+     */
+    public String Login(String username, String password){
+        User user = userRepo.findByUsername(username);
+        if (user == null || !passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new RuntimeException("Invalid username or password");
+        }
+        return jwtService.generateToken(user.getUsername());
     }
 }
