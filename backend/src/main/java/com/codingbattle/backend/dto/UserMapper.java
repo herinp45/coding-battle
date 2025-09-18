@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
+    public UserMapper() {
+    }
+
     /**
      * Convert User entity to UserResponseDTO (without password)
      */

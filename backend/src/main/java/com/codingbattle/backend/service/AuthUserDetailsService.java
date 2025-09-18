@@ -34,10 +34,13 @@ public class AuthUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
         com.codingbattle.backend.model.User user = userRepo.findByUsernameOrEmail(identifier, identifier);
+
+        // If user is not found, throw exception
         if (user == null) {
             throw new UsernameNotFoundException("User not found:" + identifier);
         }
 
+        // Convert user roles to Spring Security roles
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPasswordHash())
