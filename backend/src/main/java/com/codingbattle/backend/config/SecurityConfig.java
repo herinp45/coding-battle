@@ -24,19 +24,13 @@ import static org.springframework.security.config.Customizer.withDefaults;
  */
 @Configuration
 public class SecurityConfig {
-    private final UserDetailsService userDetailsService;
+
     private final JwtFilter jwtFilter;
 
-    @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, JwtFilter jwtFilter) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
-    /**
-     * Password encoder bean
-     * @return PasswordEncoder instance
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,28 +38,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable) // disables CSRF
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/register","/api/auth/login").permitAll()  // allow public access to auth endpoints
-                        .anyRequest().authenticated()                    // protect everything else
+                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(withDefaults());
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
-
-    @Bean
-    public AuthenctionProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
 }
+
