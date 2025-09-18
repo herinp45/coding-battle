@@ -35,10 +35,10 @@ public class JWTService {
      * @param username the username for which to generate the token
      * @return the generated JWT token
      */
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
         // USer role can be dynamic based on your requirements
-        claims.put("role", "user");
+        claims.put("role", role);
         return Jwts.builder()
                 .claims()
                 .add(claims)
@@ -61,7 +61,7 @@ public class JWTService {
     }
 
     /**
-     *
+     * Extracts the username from the specified JWT token.
      */
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -117,5 +117,15 @@ public class JWTService {
      */
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
+    }
+
+    /**
+     * Extracts the user role from the specified JWT token.
+     *
+     * @param token the JWT token from which to extract the user role
+     * @return the extracted user role
+     */
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 }
