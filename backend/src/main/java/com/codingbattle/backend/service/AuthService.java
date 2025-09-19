@@ -74,12 +74,13 @@ public class AuthService {
     /**
      * Authenticates a user and generates a JWT token.
      *
-     * @param username the username of the user
-     * @param password the password of the user
+     * @param userRequestDTO contains the username and password
      * @return a JWT token if authentication is successful
      * @throws RuntimeException if authentication fails
      */
-    public String Login(String username, String password){
+    public String login(UserRequestDTO userRequestDTO){
+        String username = userRequestDTO.getUsername();
+        String password = userRequestDTO.getPassword();
         User user = userRepo.findByUsername(username);
         if (user == null || !passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new RuntimeException("Invalid username or password");

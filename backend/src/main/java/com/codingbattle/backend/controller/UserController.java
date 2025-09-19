@@ -1,5 +1,7 @@
 package com.codingbattle.backend.controller;
 
+import com.codingbattle.backend.dto.UserResponseDTO;
+import com.codingbattle.backend.service.AuthService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,49 +16,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class UserController {
     /**
      * User service
      */
-    @Autowired
-    private final UserService userService;
+    private final AuthService userService;
 
     /**
      * User controller constructor
      * @param userService User service
      */
-    public UserController(UserService userService) {
+    @Autowired
+    public UserController(AuthService userService) {
         this.userService = userService;
     }
     
-    /**
-     * Get all users
-     * @return List of users
-     */
-    @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    @PostMapping("/register")
+    public UserResponseDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.register(userRequestDTO);
     }
 
-    /**
-     * Get user by id
-     *
-     * @param id User id
-     * @return User
-     */
-    @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userService.findById(id);
-    }
-
-    /**
-     * Save user
-     * @param user User
-     * @return User
-     */
-    @PostMapping("/save")
-    public User saveUser(@RequestBody UserRequestDTO user) {
-        return userService.save(user);
+    @PostMapping("/login")
+    public String loginUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.login(userRequestDTO);
     }
 }
