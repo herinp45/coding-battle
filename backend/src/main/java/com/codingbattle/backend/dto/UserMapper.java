@@ -18,18 +18,18 @@ public class UserMapper {
     public UserResponseDTO toResponseDTO(User user) {
         if (user == null) return null;
 
-        return UserResponseDTO.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .rating(user.getRating())
-                .wins(user.getWins())
-                .losses(user.getLosses())
-                .isOnline(user.getIsOnline())
-                .createdAt(user.getCreatedAt())
-                .winRate(user.getWinRate())
-                .totalGames(user.getTotalGames())
-                .build();
+        return new UserResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRating(),
+                user.getWins(),
+                user.getLosses(),
+                user.getCreatedAt(),
+                user.getWinRate(),
+                user.getWins() + user.getLosses()
+        );
+
     }
 
     /**
@@ -39,17 +39,13 @@ public class UserMapper {
     public User toEntity(UserRequestDTO dto) {
         if (dto == null) return null;
 
-        return User.builder()
-                .username(dto.getUsername())
-                .email(dto.getEmail())
-                .passwordHash(dto.getPassword()) // Hash in service layer!
-                .rating(1200)
-                .build();
+        return new User(dto.getUsername(), dto.getEmail(), dto.getPassword());
+
     }
 
     /**
      * Update existing User entity with UserRequestDTO
-     * (Only username/email here — password/role should be handled in service)
+     * (Only username/email here)
      */
     public void updateEntity(User user, UserRequestDTO dto) {
         if (user == null || dto == null) return;

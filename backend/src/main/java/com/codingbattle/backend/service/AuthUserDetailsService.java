@@ -3,11 +3,11 @@ package com.codingbattle.backend.service;
 
 import com.codingbattle.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import com.codingbattle.backend.model.User;
 
 
 
@@ -33,7 +33,7 @@ public class AuthUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
-        com.codingbattle.backend.model.User user = userRepo.findByUsernameOrEmail(identifier, identifier);
+        User user = userRepo.findByUsernameOrEmail(identifier, identifier);
 
         // If user is not found, throw exception
         if (user == null) {
