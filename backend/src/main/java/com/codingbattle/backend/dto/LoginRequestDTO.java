@@ -1,20 +1,11 @@
 package com.codingbattle.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 /**
  * DTO for login requests using a generic identifier (username or email)
  */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class LoginRequestDTO {
 
     @NotBlank(message = "Identifier is required")
@@ -22,4 +13,29 @@ public class LoginRequestDTO {
 
     @NotBlank(message = "Password is required")
     private String password;
+
+    /**
+     * Constructor with all fields
+     * @param identifier Username or email
+     * @param password Password
+     */
+    public LoginRequestDTO(String identifier, String password) {
+        this.identifier = identifier;
+        this.password = password;
+    }
+
+    // Getters and setters
+    public String getIdentifier() {
+        return identifier;
+    }
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

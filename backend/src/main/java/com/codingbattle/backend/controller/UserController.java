@@ -1,5 +1,6 @@
 package com.codingbattle.backend.controller;
 
+import com.codingbattle.backend.dto.LoginRequestDTO;
 import com.codingbattle.backend.dto.UserResponseDTO;
 import com.codingbattle.backend.service.AuthService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public String loginUser(@RequestBody LoginRequestDTO userRequestDTO) {
         return userService.login(userRequestDTO);
     }
 }

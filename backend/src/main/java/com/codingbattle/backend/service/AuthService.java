@@ -1,5 +1,6 @@
 package com.codingbattle.backend.service;
 
+import com.codingbattle.backend.dto.LoginRequestDTO;
 import com.codingbattle.backend.dto.UserMapper;
 import com.codingbattle.backend.dto.UserRequestDTO;
 import com.codingbattle.backend.dto.UserResponseDTO;
@@ -41,7 +42,7 @@ public class AuthService {
      * @param jwtService            the JWT service for generating and validating tokens
      */
     @Autowired
-    public AuthService(UserRepo userRepo, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService, UserMapper userMapper) {
+    public AuthService(UserRepo userRepo, PasswordEncoder passwordEncoder, JWTService jwtService, UserMapper userMapper) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -78,10 +79,10 @@ public class AuthService {
      * @return a JWT token if authentication is successful
      * @throws RuntimeException if authentication fails
      */
-    public String login(UserRequestDTO userRequestDTO){
-        String username = userRequestDTO.getUsername();
+    public String login(LoginRequestDTO userRequestDTO){
+        String identifier = userRequestDTO.getIdentifier();
         String password = userRequestDTO.getPassword();
-        User user = userRepo.findByUsername(username);
+        User user = userRepo.findByUsernameOrEmail(identifier, identifier);
         if (user == null || !passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new RuntimeException("Invalid username or password");
         }
