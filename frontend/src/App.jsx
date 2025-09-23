@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import './App.css'
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Login from "./pages/Login.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
 
-  return (
-    <BrowserRouter>
-        <Routes>
-            {/* Define your routes here */}
-            <Route path="/login" element={<Login />} />
-        </Routes>
-    </BrowserRouter>
-  )
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* Define your routes here */}
+                <Route path="/login" element={<Login/>}/>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
