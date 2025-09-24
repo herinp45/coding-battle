@@ -4,11 +4,9 @@ export default function Login() {
     const [remember, setRemember] = useState(false);
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-black text-white relative overflow-hidden px-4 md:flex-col">
-            <div className="absolute top-5 left-5 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 bg-yellow-600/30 rounded-full flex items-center justify-center">
-            </div>
-            <div className="absolute bottom-5 right-5 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 bg-yellow-600/30 rounded-full flex items-center justify-center">
-            </div>
+        <div className="flex items-center justify-center min-h-screen bg-black text-white relative overflow-hidden px-4
+        md:flex-col">
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full max-w-6xl z-10">
                 {/* Left Section */}
