@@ -3,21 +3,18 @@ package com.codingbattle.backend.controller;
 import com.codingbattle.backend.dto.LoginRequestDTO;
 import com.codingbattle.backend.dto.UserResponseDTO;
 import com.codingbattle.backend.service.AuthService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.List;
 import java.util.Optional;
 
 import com.codingbattle.backend.model.User;
 import com.codingbattle.backend.dto.UserRequestDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
     /**
      * User service

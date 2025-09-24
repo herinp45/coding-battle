@@ -1,12 +1,20 @@
 import { useState } from "react";
-import axios from "axios";
+import Alert from "../componnents/Alert.jsx";
+import axios from "../axios/axios.js";
+import {Link} from "react-router-dom";
+
 
 export default function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertType, setAlertType] = useState("error");
+
+
     async function handleSubmit(event) {
+        setAlertMessage("");
         event.preventDefault();
 
         const formData = {
@@ -18,16 +26,35 @@ export default function Register() {
         console.log("Form submitted:", formData);
 
         try {
-            const response = await axios.post("/api/register", formData);
+            const response = await axios.post("/auth/register", formData);
             console.log("Registration successful:", response.data);
+            setAlertMessage("Registration successful! Please log in.");
+            setAlertType("success");
 
         } catch (error) {
             console.error("Registration error:", error);
+            if (error.response && error.response.data && error.response.data.error) {
+                setAlertMessage(error.response.data.error);
+            } else {
+                setAlertMessage("An error occurred during registration. Please try again.");
+            }
+            setAlertType("error");
         }
     }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black text-white relative overflow-hidden px-4 md:flex-col">
+            {/* Alert Component */}
+            {alertMessage && <Alert type={alertType} message={alertMessage} onClose={() => setAlertMessage("")} />}
+
+            {/* Background Decorations */}
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                <div className="absolute -top-32 -left-32 w-64 h-64 bg-yellow-400 rounded-full opacity-20 filter blur-3xl animate-blob"></div>
+                <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-yellow-400 rounded-full opacity-20 filter blur-3xl animate-blob animation-delay-2000"></div>
+                <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-yellow-400 rounded-full opacity-20 filter blur-3xl animate-blob animation-delay-4000"></div>
+            </div>
+
+            {/* Main Content */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 w-full max-w-6xl z-10">
                 {/* Left Section */}
                 <div className="flex flex-col justify-center space-y-3 md:space-y-4 text-center md:text-left">
@@ -75,9 +102,9 @@ export default function Register() {
 
                         <p className="text-center text-yellow-200 text-xs md:text-sm">
                             Already have an account?{" "}
-                            <a href="/login" className="underline text-yellow-400 hover:text-yellow-300">
+                            <Link to="/login" className="underline text-yellow-400 hover:text-yellow-300">
                                 Login here
-                            </a>
+                            </Link>
                         </p>
                     </form>
                 </div>
