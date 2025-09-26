@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Alert from "../components/Alert.jsx";
 import axios from "../axios/axios.js";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 
 export default function Register() {
@@ -12,6 +12,7 @@ export default function Register() {
     const [alertMessage, setAlertMessage] = useState("");
     const [alertType, setAlertType] = useState("error");
 
+    const navigate = useNavigate();
 
     async function handleSubmit(event) {
         setAlertMessage("");
@@ -30,6 +31,9 @@ export default function Register() {
             console.log("Registration successful:", response.data);
             setAlertMessage("Registration successful! Please log in.");
             setAlertType("success");
+            setTimeout(() => {
+                navigate("/login");
+            }, 1000);
 
         } catch (error) {
             console.error("Registration error:", error);
