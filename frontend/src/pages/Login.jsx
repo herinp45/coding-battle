@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Alert from "../components/Alert.jsx";
 import axios from "../axios/axios.js";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "../context/AuthContext.jsx";
 
 export default function Login() {
     const [identifier, setIdentifier] = useState(""); // username or email
@@ -9,6 +10,11 @@ export default function Login() {
 
     const [alertMessage, setAlertMessage] = useState("");
     const [alertType, setAlertType] = useState("error");
+
+    const {login: saveToken} = useAuth();
+
+    // navigate
+    const navigate = useNavigate();
 
     async function handleSubmit(event) {
         setAlertMessage("");
@@ -26,11 +32,16 @@ export default function Login() {
             console.log("Login successful:", response.data);
             setAlertMessage("Login successful! Redirecting...");
             setAlertType("success");
+            localStorage.setItem("authToken", response.data.token);
 
-            // TODO: handle redirect / saving token here
-        } catch (error) {
-            console.error("Login error:", error);
-            if (error.response && error.response.data && error.response.data.error) {
+
+
+            setTimeout(() => {
+                navigate("/dashboard");
+            }, 1000);
+        }
+        catch (error) {
+            if (err.response?.data?.error) {
                 setAlertMessage(error.response.data.error);
             } else {
                 setAlertMessage("An error occurred during login. Please try again.");
