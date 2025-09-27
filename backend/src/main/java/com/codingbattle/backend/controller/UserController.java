@@ -1,16 +1,14 @@
 package com.codingbattle.backend.controller;
 
-import com.codingbattle.backend.dto.LoginRequestDTO;
-import com.codingbattle.backend.dto.UserResponseDTO;
+import com.codingbattle.backend.dto.UserDTO.LoginRequestDTO;
+import com.codingbattle.backend.dto.UserDTO.UserResponseDTO;
 import com.codingbattle.backend.service.AuthService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.codingbattle.backend.model.User;
-import com.codingbattle.backend.dto.UserRequestDTO;
+import com.codingbattle.backend.dto.UserDTO.UserRequestDTO;
 
 @RestController
 @RequestMapping("/api/auth")

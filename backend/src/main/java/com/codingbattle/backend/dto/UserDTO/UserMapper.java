@@ -1,4 +1,4 @@
-package com.codingbattle.backend.dto;
+package com.codingbattle.backend.dto.UserDTO;
 
 import com.codingbattle.backend.model.User;
 import org.springframework.stereotype.Component;

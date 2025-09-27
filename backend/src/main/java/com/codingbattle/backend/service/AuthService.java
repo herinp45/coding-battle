@@ -1,13 +1,12 @@
 package com.codingbattle.backend.service;
 
-import com.codingbattle.backend.dto.LoginRequestDTO;
-import com.codingbattle.backend.dto.UserMapper;
-import com.codingbattle.backend.dto.UserRequestDTO;
-import com.codingbattle.backend.dto.UserResponseDTO;
+import com.codingbattle.backend.dto.UserDTO.LoginRequestDTO;
+import com.codingbattle.backend.dto.UserDTO.UserMapper;
+import com.codingbattle.backend.dto.UserDTO.UserRequestDTO;
+import com.codingbattle.backend.dto.UserDTO.UserResponseDTO;
 import com.codingbattle.backend.model.User;
 import com.codingbattle.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.codingbattle.backend.dto;
+package com.codingbattle.backend.dto.UserDTO;
 
 import jakarta.validation.constraints.*;
 
