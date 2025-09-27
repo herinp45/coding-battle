@@ -1,6 +1,9 @@
 package com.codingbattle.backend.dto.ProblemDTO;
 
 import com.codingbattle.backend.model.Problem;
+import com.codingbattle.backend.dto.TestCaseDTO.TestCaseRequestDTO;
+
+import java.util.List;
 
 public class ProblemRequestDTO {
     private String title;
