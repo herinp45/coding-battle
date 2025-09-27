@@ -1,7 +1,7 @@
-package com.codingbattle.backend.dto.ProblemDTO;
+package com.codingbattle.backend.dto.Problem.ProblemDTO;
 
 import com.codingbattle.backend.model.Problem;
-import com.codingbattle.backend.dto.TestCaseDTO.TestCaseRequestDTO;
+import com.codingbattle.backend.dto.Problem.TestCaseDTO.TestCaseRequestDTO;
 
 import java.util.List;
 

@@ -1,26 +1,16 @@
-package com.codingbattle.backend.dto.TestCaseDTO;
+package com.codingbattle.backend.dto.Problem.TestCaseDTO;
 
-public class TestCaseResponseDTO {
-    private String id;
+public class TestCaseRequestDTO {
     private String inputData;
     private String expectedOutput;
     private Boolean isSample;
 
-    public TestCaseResponseDTO(String id, String inputData, String expectedOutput, Boolean isSample) {
-        this.id = id;
+    public TestCaseRequestDTO(String inputData, String expectedOutput, Boolean isSample) {
         this.inputData = inputData;
         this.expectedOutput = expectedOutput;
         this.isSample = isSample;
     }
-    public TestCaseResponseDTO() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public TestCaseRequestDTO() {
     }
 
     public String getInputData() {
