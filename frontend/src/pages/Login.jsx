@@ -32,16 +32,12 @@ export default function Login() {
             console.log("Login successful:", response.data);
             setAlertMessage("Login successful! Redirecting...");
             setAlertType("success");
-            localStorage.setItem("authToken", response.data.token);
+            saveToken(response.data);
 
-
-
-            setTimeout(() => {
-                navigate("/dashboard");
-            }, 1000);
+            navigate("/dashboard");
         }
         catch (error) {
-            if (err.response?.data?.error) {
+            if (error.response?.data?.error) {
                 setAlertMessage(error.response.data.error);
             } else {
                 setAlertMessage("An error occurred during login. Please try again.");
@@ -73,7 +69,8 @@ export default function Login() {
                 </div>
 
                 {/* Right Section - Login Form */}
-                <div className="bg-black/50 border relative border-yellow-500/30 rounded-2xl shadow-xl p-6 md:p-12 backdrop-blur-sm w-full max-w-lg mx-auto">
+                <div className="bg-black/50 border relative border-yellow-500/30 rounded-2xl shadow-xl p-6 md:p-12
+                backdrop-blur-sm w-7/8 max-w-lg mx-auto">
                     <h2 className="text-2xl md:text-3xl font-semibold mb-6 md:mb-8 text-center text-yellow-300">
                         Login
                     </h2>

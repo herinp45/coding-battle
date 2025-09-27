@@ -39,4 +39,14 @@ public class UserController {
     public String loginUser(@RequestBody LoginRequestDTO userRequestDTO) {
         return userService.login(userRequestDTO);
     }
+
+    @GetMapping("/users")
+    public List<UserResponseDTO> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PostMapping("/users")
+    public UserResponseDTO addUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.register(userRequestDTO);
+    }
 }

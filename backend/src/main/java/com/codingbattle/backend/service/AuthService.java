@@ -11,6 +11,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthService {
 
@@ -87,5 +89,17 @@ public class AuthService {
             throw new RuntimeException("Invalid username or password");
         }
         return jwtService.generateToken(user.getUsername(), String.valueOf(user.getRole()));
+    }
+
+    /**
+     * Gets all users.
+     *
+     * @return List of UserResponseDTO containing all users
+     */
+    public List<UserResponseDTO> getAllUsers() {
+        List<User> users = userRepo.findAll();
+        return users.stream()
+                .map(userMapper::toResponseDTO)
+                .toList();
     }
 }

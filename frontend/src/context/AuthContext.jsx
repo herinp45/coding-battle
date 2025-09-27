@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
 
 // Create context
@@ -54,9 +53,9 @@ export const AuthProvider = ({ children }) => {
         [token, isAuthenticated, loading]);
 
     return (
-        <AuthContext value={value}>
+        <AuthContext.Provider value={value}>
             {children}
-        </AuthContext>
+        </AuthContext.Provider>
     );
 };
 
