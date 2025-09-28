@@ -44,4 +44,11 @@ public class MatchRequestDTO {
     public void setPlayer2(UUID player2) {
         this.player2 = player2;
     }
+
+    public Instant getStartedAt() {
+        return startedAt;
+    }
+    public void setStartedAt(Instant startedAt) {
+        this.startedAt = startedAt;
+    }
 }
