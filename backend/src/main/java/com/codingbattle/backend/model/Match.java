@@ -31,11 +31,19 @@ public class Match {
     @Column(name = "started_at", nullable = false, updatable = false)
     private Instant startedAt = Instant.now();
 
-    @Column(name = "ended_at")
-    private Instant endedAt;
+
 
     // ===== Constructors =====
     public Match() {}
+
+    public Match(UUID id, Problem problem, User user1, User user2, User winner, Instant startedAt) {
+        this.id = id;
+        this.problem = problem;
+        this.user1 = user1;
+        this.user2 = user2;
+        this.winner = winner;
+        this.startedAt = startedAt;
+    }
 
     public Match(Problem problem, User user1, User user2, Instant startedAt) {
         this.problem = problem;
@@ -63,6 +71,4 @@ public class Match {
     public Instant getStartedAt() { return startedAt; }
     public void setStartedAt(Instant startedAt) { this.startedAt = startedAt; }
 
-    public Instant getEndedAt() { return endedAt; }
-    public void setEndedAt(Instant endedAt) { this.endedAt = endedAt; }
 }

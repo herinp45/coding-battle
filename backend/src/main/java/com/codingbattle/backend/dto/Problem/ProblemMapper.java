@@ -7,10 +7,12 @@ import com.codingbattle.backend.dto.Problem.TestCaseDTO.TestCaseRequestDTO;
 import com.codingbattle.backend.dto.Problem.TestCaseDTO.TestCaseResponseDTO;
 import com.codingbattle.backend.model.Problem;
 import com.codingbattle.backend.model.TestCase;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class ProblemMapper {
 
     public static Problem toEntity(ProblemRequestDTO dto) {
