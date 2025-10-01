@@ -3,6 +3,7 @@ package com.codingbattle.backend.service;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 public class DockerSandboxService {
 
@@ -30,7 +31,10 @@ public class DockerSandboxService {
         }
     }
 
-    public SandboxResult runCode(String input) throws IOException, InterruptedException {
+    public SandboxResult runCode(String code, List<String> input) throws IOException, InterruptedException {
+
+        String inputStr = String.join("\n", input);
+        String payload = code + "###INPUT###" + inputStr;
 
         ProcessBuilder pb = new ProcessBuilder(
                 "docker", "run", "--rm", "-i",
@@ -44,7 +48,7 @@ public class DockerSandboxService {
         // Send input to stdin of container
         try (BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(process.getOutputStream()))) {
-            writer.write(input);
+            writer.write(payload);
             writer.flush();
         }
         catch (IOException e) {
@@ -67,10 +71,12 @@ public class DockerSandboxService {
     public static void main(String[] args) {
         DockerSandboxService service = new DockerSandboxService();
         try {
-            SandboxResult result = service.runCode("""
-                    1
-                    2
-                    """);
+            SandboxResult result = service.runCode(
+                    // Python code
+                    "for _ in range(3):\n    print(input())",
+                    // Multiple lines of input
+                    List.of("Hello", "Sandbox", "World")
+            );
             System.out.println("Success: " + result.isSuccess());
             System.out.println("Output: " + result.getOutput());
             System.out.println("Error: " + result.getError());
