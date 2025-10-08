@@ -3,6 +3,7 @@ package com.codingbattle.backend.service;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.List;
 
 public class DockerSandboxService {
@@ -68,20 +69,47 @@ public class DockerSandboxService {
         return new SandboxResult(exitCode==0, stdout, stderr);
     }
 
+    public static String[] compareOutputs(String actualOutput, List<String> expectedOutput) {
+        String[] actualLines = actualOutput.strip().split("\\R"); // split by any newline
+        String[] results = new String[expectedOutput.size()];
+
+        for (int i = 0; i < expectedOutput.size(); i++) {
+            String expected = expectedOutput.get(i).trim();
+            String actual = i < actualLines.length ? actualLines[i].trim() : "<no output>";
+
+            if (expected.equals(actual)) {
+                results[i] = "Test case " + (i + 1) + " passed.";
+            } else {
+                results[i] = "Test case " + (i + 1) + " failed. Expected: " + expected + ", Got: " + actual;
+            }
+        }
+
+        return results;
+    }
+
     public static void main(String[] args) {
         DockerSandboxService service = new DockerSandboxService();
         try {
-            SandboxResult result = service.runCode(
-                    // Python code
-                    "for _ in range(3):\n    print(input())",
-                    // Multiple lines of input
-                    List.of("Hello", "Sandbox", "World")
-            );
+            String testCode = """
+                for _ in range(3):
+                    n = int(input())
+                    print(n + 3)
+                """;
+
+            SandboxResult result = service.runCode(testCode, List.of("1", "2", "3"));
             System.out.println("Success: " + result.isSuccess());
-            System.out.println("Output: " + result.getOutput());
-            System.out.println("Error: " + result.getError());
+
+            String[] results = compareOutputs(result.getOutput(), List.of("4", "5", "6"));
+
+            for (String line : results) {
+                System.out.println(line);
+            }
+
+            System.out.println("\nError: " + result.getError());
+
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 }
+

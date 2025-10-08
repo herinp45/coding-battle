@@ -14,7 +14,7 @@ def main():
             text=True,
             timeout=5
         )
-        print("Output:\n", result.stdout)
+        print(result.stdout)
         if result.stderr:
             print("Errors:\n", result.stderr)
     except subprocess.TimeoutExpired:
