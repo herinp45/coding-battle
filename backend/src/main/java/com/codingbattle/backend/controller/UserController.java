@@ -2,7 +2,7 @@ package com.codingbattle.backend.controller;
 
 import com.codingbattle.backend.dto.UserDTO.LoginRequestDTO;
 import com.codingbattle.backend.dto.UserDTO.UserResponseDTO;
-import com.codingbattle.backend.service.AuthService;
+import com.codingbattle.backend.service.User.AuthService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 

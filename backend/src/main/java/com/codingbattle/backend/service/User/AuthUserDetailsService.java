@@ -1,4 +1,4 @@
-package com.codingbattle.backend.service;
+package com.codingbattle.backend.service.User;
 
 
 import com.codingbattle.backend.repository.UserRepo;
@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.codingbattle.backend.model.User;
-
-
 
 @Service
 public class AuthUserDetailsService implements UserDetailsService {

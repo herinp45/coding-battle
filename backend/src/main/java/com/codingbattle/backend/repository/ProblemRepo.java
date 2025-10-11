@@ -1,12 +1,11 @@
 package com.codingbattle.backend.repository;
 
-import com.codingbattle.backend.model.Match;
+import com.codingbattle.backend.model.Problem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface MatchRepo extends JpaRepository<Match, UUID> {
-
+public interface ProblemRepo extends JpaRepository<Problem, UUID> {
 }

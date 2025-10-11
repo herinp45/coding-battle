@@ -49,7 +49,7 @@ public class Match {
         this.problem = problem;
         this.user1 = user1;
         this.user2 = user2;
-        this.startedAt = startedAt;
+        this.startedAt = startedAt != null ? startedAt : Instant.now();
     }
 
     // ===== Getters & Setters =====

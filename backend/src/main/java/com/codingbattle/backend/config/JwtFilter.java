@@ -1,7 +1,7 @@
 package com.codingbattle.backend.config;
 
-import com.codingbattle.backend.service.AuthUserDetailsService;
-import com.codingbattle.backend.service.JWTService;
+import com.codingbattle.backend.service.User.AuthUserDetailsService;
+import com.codingbattle.backend.service.User.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

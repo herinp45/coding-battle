@@ -1,4 +1,4 @@
-package com.codingbattle.backend.service;
+package com.codingbattle.backend.service.User;
 
 import com.codingbattle.backend.dto.UserDTO.LoginRequestDTO;
 import com.codingbattle.backend.dto.UserDTO.UserMapper;

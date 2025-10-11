@@ -1,4 +1,4 @@
-package com.codingbattle.backend.service;
+package com.codingbattle.backend.service.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
