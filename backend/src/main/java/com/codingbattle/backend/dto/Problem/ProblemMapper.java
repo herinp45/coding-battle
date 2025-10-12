@@ -1,6 +1,5 @@
 package com.codingbattle.backend.dto.Problem;
 
-
 import com.codingbattle.backend.dto.Problem.ProblemDTO.ProblemRequestDTO;
 import com.codingbattle.backend.dto.Problem.ProblemDTO.ProblemResponseDTO;
 import com.codingbattle.backend.dto.Problem.TestCaseDTO.TestCaseRequestDTO;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProblemMapper {
 
-    public static Problem toEntity(ProblemRequestDTO dto) {
+    public Problem toEntity(ProblemRequestDTO dto) {
         Problem problem = new Problem(
                 dto.getTitle(),
                 dto.getDescription(),
@@ -37,7 +36,7 @@ public class ProblemMapper {
         return problem;
     }
 
-    public static ProblemResponseDTO toDTO(Problem problem) {
+    public ProblemResponseDTO toDTO(Problem problem) {
         ProblemResponseDTO dto = new ProblemResponseDTO();
         dto.setId(problem.getId().toString());
         dto.setTitle(problem.getTitle());
@@ -50,16 +49,17 @@ public class ProblemMapper {
         dto.setActive(problem.getActive());
         dto.setCreatedAt(problem.getCreatedAt().toString());
 
-        List<TestCaseResponseDTO> testCaseDTOs = problem.getTestCases()
-                .stream()
-                .map(ProblemMapper::toDTO)
+        List<TestCaseResponseDTO> testCaseDTOs = problem.getTestCases() == null
+                ? List.of()
+                : problem.getTestCases().stream()
+                .map(this::toDTO)
                 .collect(Collectors.toList());
         dto.setTestCases(testCaseDTOs);
 
         return dto;
     }
 
-    public static TestCase toEntity(TestCaseRequestDTO dto) {
+    public TestCase toEntity(TestCaseRequestDTO dto) {
         return new TestCase(
                 dto.getInputData(),
                 dto.getExpectedOutput(),
@@ -67,7 +67,7 @@ public class ProblemMapper {
         );
     }
 
-    public static TestCaseResponseDTO toDTO(TestCase testCase) {
+    public TestCaseResponseDTO toDTO(TestCase testCase) {
         TestCaseResponseDTO dto = new TestCaseResponseDTO();
         dto.setId(testCase.getId().toString());
         dto.setInputData(testCase.getInputData());
