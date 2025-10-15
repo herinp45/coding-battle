@@ -3,12 +3,10 @@ package com.codingbattle.backend.dto.Problem.TestCaseDTO;
 public class TestCaseRequestDTO {
     private String inputData;
     private String expectedOutput;
-    private Boolean isSample;
 
     public TestCaseRequestDTO(String inputData, String expectedOutput, Boolean isSample) {
         this.inputData = inputData;
         this.expectedOutput = expectedOutput;
-        this.isSample = isSample;
     }
     public TestCaseRequestDTO() {
     }
@@ -29,11 +27,4 @@ public class TestCaseRequestDTO {
         this.expectedOutput = expectedOutput;
     }
 
-    public Boolean getSample() {
-        return isSample;
-    }
-
-    public void setSample(Boolean sample) {
-        isSample = sample;
-    }
 }

@@ -21,16 +21,12 @@ public class TestCase {
     @Column(name = "expected_output", columnDefinition = "TEXT", nullable = false)
     private String expectedOutput;
 
-    @Column(name = "is_sample", nullable = false)
-    private Boolean isSample = false;
-
     // ===== Constructors =====
     public TestCase() {}
 
-    public TestCase(String inputData, String expectedOutput, Boolean isSample) {
+    public TestCase(String inputData, String expectedOutput) {
         this.inputData = inputData;
         this.expectedOutput = expectedOutput;
-        this.isSample = isSample;
     }
 
     // ===== Getters & Setters =====
@@ -46,6 +42,4 @@ public class TestCase {
     public String getExpectedOutput() { return expectedOutput; }
     public void setExpectedOutput(String expectedOutput) { this.expectedOutput = expectedOutput; }
 
-    public Boolean getSample() { return isSample; }
-    public void setSample(Boolean sample) { isSample = sample; }
 }

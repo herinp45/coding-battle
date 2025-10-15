@@ -62,8 +62,7 @@ public class ProblemMapper {
     public TestCase toEntity(TestCaseRequestDTO dto) {
         return new TestCase(
                 dto.getInputData(),
-                dto.getExpectedOutput(),
-                dto.getSample()
+                dto.getExpectedOutput()
         );
     }
 
@@ -72,7 +71,7 @@ public class ProblemMapper {
         dto.setId(testCase.getId().toString());
         dto.setInputData(testCase.getInputData());
         dto.setExpectedOutput(testCase.getExpectedOutput());
-        dto.setSample(testCase.getSample());
+
         return dto;
     }
 }

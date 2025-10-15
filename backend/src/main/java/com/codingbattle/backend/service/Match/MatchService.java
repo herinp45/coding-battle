@@ -1,102 +1,93 @@
 package com.codingbattle.backend.service.Match;
 
+import com.codingbattle.backend.dto.MatchDTO.MatchMapper;
+import com.codingbattle.backend.dto.MatchDTO.MatchResponseDTO;
 import com.codingbattle.backend.model.Match;
 import com.codingbattle.backend.model.User;
 import com.codingbattle.backend.repository.MatchRepo;
 import com.codingbattle.backend.repository.ProblemRepo;
 import com.codingbattle.backend.repository.UserRepo;
-
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
 public class MatchService {
 
-    /**
-     * Repository for match data.
-     */
     private final MatchRepo matchRepository;
+    private final UserRepo userRepo;
+    private final ProblemRepo problemRepo;
+    private final MatchMapper matchMapper;
 
-    /**
-     * Queue for users waiting to be matched.
-     */
     private final ConcurrentLinkedQueue<UUID> waitingQueue = new ConcurrentLinkedQueue<>();
 
-    /**
-     * Repository for user data.
-     */
-    private final UserRepo userRepo;
-
-    /**
-     * Repository for problem data.
-     */
-    private final ProblemRepo problemRepo;
-
-    /**
-     * Constructor for MatchService.
-     * @param matchRepository the repository for match data
-     * @param userRepo the repository for user data
-     * @param problemRepo the repository for problem data
-     */
     @Autowired
-    public MatchService(MatchRepo matchRepository, UserRepo userRepo, ProblemRepo problemRepo) {
+    public MatchService(MatchRepo matchRepository, UserRepo userRepo, ProblemRepo problemRepo, MatchMapper matchMapper) {
         this.matchRepository = matchRepository;
         this.userRepo = userRepo;
         this.problemRepo = problemRepo;
+        this.matchMapper = matchMapper;
     }
 
     /**
      * Adds a user to the waiting queue and attempts to find a match.
      * @param userId the UUID of the user to be added to the queue
      */
-    public void joinQueue(UUID userId) {
+    public synchronized MatchResponseDTO joinQueue(UUID userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+
+        if (waitingQueue.contains(userId)) {
+            throw new IllegalStateException("User is already in the queue");
+        }
+
         waitingQueue.add(userId);
-        findMatch();
+        return findMatch();
     }
 
     /**
      * Attempts to find a match for two users in the waiting queue.
      * If a match is found, creates a Match entity and saves it to the repository.
-     * If not enough users are available, they remain in the queue.
      */
-    private void findMatch() {
+    private MatchResponseDTO findMatch() {
         UUID user1 = waitingQueue.poll();
         UUID user2 = waitingQueue.poll();
+
         if (user1 == null || user2 == null) {
-            // only one user, put back if needed
+            // only one user, requeue if needed
             if (user1 != null) waitingQueue.add(user1);
-            return;
+            return null;
         }
 
-        // Find User and Problem entities from their UUIDs
         User user1A = userRepo.findById(user1).orElse(null);
         User user2A = userRepo.findById(user2).orElse(null);
 
-        // If either user is not found, re-add the other user to the queue if needed
         if (user1A == null) {
             if (user2A != null) waitingQueue.add(user2);
-            return;
+            return null;
         }
         if (user2A == null) {
             waitingQueue.add(user1);
-            return;
+            return null;
         }
-        // TODO: Select a random problem from the database
+
+        // Select a random problem
         var problem = problemRepo.findAll().stream().findAny().orElse(null);
         if (problem == null) {
-            // No problem found, re-add users to the queue
             waitingQueue.add(user1);
             waitingQueue.add(user2);
-            return;
+            return null;
         }
 
+        // Create and persist match
         Match match = new Match(problem, user1A, user2A, null);
         matchRepository.save(match);
-        System.out.println("Created match: " + match.getId() + " for users " + user1 + " and " + user2);
 
-        // TODO: send matchFound via WebSocket to userA and userB
+        System.out.println("✅ Created match: " + match.getId() + " for users " + user1 + " and " + user2);
+
+        return matchMapper.toDTO(match);
     }
 }

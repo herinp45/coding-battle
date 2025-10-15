@@ -4,13 +4,17 @@ public class TestCaseResponseDTO {
     private String id;
     private String inputData;
     private String expectedOutput;
-    private Boolean isSample;
 
-    public TestCaseResponseDTO(String id, String inputData, String expectedOutput, Boolean isSample) {
+    /**
+     * Constructor for TestCaseResponseDTO
+     * @param id
+     * @param inputData
+     * @param expectedOutput
+     */
+    public TestCaseResponseDTO(String id, String inputData, String expectedOutput) {
         this.id = id;
         this.inputData = inputData;
         this.expectedOutput = expectedOutput;
-        this.isSample = isSample;
     }
     public TestCaseResponseDTO() {
     }
@@ -39,11 +43,4 @@ public class TestCaseResponseDTO {
         this.expectedOutput = expectedOutput;
     }
 
-    public Boolean getSample() {
-        return isSample;
-    }
-
-    public void setSample(Boolean sample) {
-        isSample = sample;
-    }
 }
