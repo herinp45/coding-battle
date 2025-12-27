@@ -86,7 +86,7 @@ public class MatchService {
         Match match = new Match(problem, user1A, user2A, null);
         matchRepository.save(match);
 
-        System.out.println("✅ Created match: " + match.getId() + " for users " + user1 + " and " + user2);
+        System.out.println("Created match: " + match.getId() + " for users " + user1 + " and " + user2);
 
         return matchMapper.toDTO(match);
     }

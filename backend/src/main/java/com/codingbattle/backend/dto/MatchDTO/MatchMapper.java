@@ -2,10 +2,12 @@ package com.codingbattle.backend.dto.MatchDTO;
 import com.codingbattle.backend.model.Match;
 import com.codingbattle.backend.model.Problem;
 import com.codingbattle.backend.model.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MatchMapper {
 
-    public static Match toEntity(MatchRequestDTO dto, Problem problem, User user1, User user2) {
+    public Match toEntity(MatchRequestDTO dto, Problem problem, User user1, User user2) {
         return new Match(
                 problem,
                 user1,
@@ -14,7 +16,7 @@ public class MatchMapper {
         );
     }
 
-    public static MatchResponseDTO toDTO(Match match) {
+    public MatchResponseDTO toDTO(Match match) {
         MatchResponseDTO dto = new MatchResponseDTO();
         dto.setId(match.getId());
         dto.setProblemId(match.getProblem().getId());
