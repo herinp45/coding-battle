@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.codingbattle.backend.model.User;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public interface UserRepo extends JpaRepository<User, UUID> {
 
     User findByUsername(String username);
+
 
     /**
      * Find user by email

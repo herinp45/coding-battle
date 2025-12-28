@@ -104,6 +104,7 @@ public class AuthService {
         String username = auth.getName();
 
         User user = userRepo.findByUsername(username);
+
         if (user == null) {
             throw new RuntimeException("User not found");
         }
