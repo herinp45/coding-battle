@@ -91,6 +91,22 @@ public class AuthService {
     }
 
     /**
+     * Gets the current user based on the provided JWT token.
+     *
+     * @param token the JWT token
+     * @return UserResponseDTO containing the current user's details
+     * @throws RuntimeException if the user is not found
+     */
+    public UserResponseDTO getCurrentUser(String token) {
+        String username = jwtService.extractUsername(token);
+        User user = userRepo.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return userMapper.toResponseDTO(user);
+    }
+
+    /**
      * Gets all users.
      *
      * @return List of UserResponseDTO containing all users

@@ -33,9 +33,16 @@ public class UserController {
         return userService.register(userRequestDTO);
     }
 
+
+
     @PostMapping("/login")
     public String loginUser(@RequestBody LoginRequestDTO userRequestDTO) {
         return userService.login(userRequestDTO);
+    }
+
+    @GetMapping("/me")
+    public UserResponseDTO getCurrentUser(@RequestParam String token) {
+        return userService.getCurrentUser(token);
     }
 
     @GetMapping("/users")
