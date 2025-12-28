@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public UserResponseDTO getCurrentUser(@RequestParam String token) {
-        return userService.getCurrentUser(token);
+    public UserResponseDTO getCurrentUser() {
+        return userService.getCurrentUser();
     }
 
     @GetMapping("/users")

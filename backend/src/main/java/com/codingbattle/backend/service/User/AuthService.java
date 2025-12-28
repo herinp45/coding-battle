@@ -9,6 +9,8 @@ import com.codingbattle.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -97,8 +99,10 @@ public class AuthService {
      * @return UserResponseDTO containing the current user's details
      * @throws RuntimeException if the user is not found
      */
-    public UserResponseDTO getCurrentUser(String token) {
-        String username = jwtService.extractUsername(token);
+    public UserResponseDTO getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
         User user = userRepo.findByUsername(username);
         if (user == null) {
             throw new RuntimeException("User not found");
