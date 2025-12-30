@@ -70,12 +70,15 @@ export default function Home() {
             if (!response.data) {
                 setAlertMessage("Waiting for an opponent...");
                 setAlertType("info");
-            } else {
+            }
+            else {
                 setAlertMessage("Match found! Redirecting...");
                 setAlertType("success");
-                navigate(`/match/${response.data.matchId}`);
+                console.log(response.data);
+                navigate(`/match/${response.data.id}`);
             }
-        } catch (error) {
+        }
+        catch (error) {
             setAlertMessage(error.response?.data?.error || "Error joining match.");
             setAlertType("error");
             setIsMatching(false);

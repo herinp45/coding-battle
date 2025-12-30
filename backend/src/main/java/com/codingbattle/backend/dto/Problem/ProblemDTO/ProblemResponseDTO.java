@@ -4,9 +4,10 @@ import com.codingbattle.backend.model.Problem;
 import com.codingbattle.backend.dto.Problem.TestCaseDTO.TestCaseResponseDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ProblemResponseDTO {
-    private String id;
+    private UUID id;
     private String title;
     private String description;
     private Problem.Difficulty difficulty;
@@ -31,7 +32,7 @@ public class ProblemResponseDTO {
         this.testCases = testCases;
     }
 
-    public ProblemResponseDTO(String id, String title, String description, Problem.Difficulty difficulty, Integer timeLimit, Integer memoryLimit, String sampleInput, String sampleOutput, Boolean active, String createdAt, List<TestCaseResponseDTO> testCases) {
+    public ProblemResponseDTO(UUID id, String title, String description, Problem.Difficulty difficulty, Integer timeLimit, Integer memoryLimit, String sampleInput, String sampleOutput, Boolean active, String createdAt, List<TestCaseResponseDTO> testCases) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -47,11 +48,11 @@ public class ProblemResponseDTO {
 
     public ProblemResponseDTO() {}
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

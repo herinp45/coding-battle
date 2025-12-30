@@ -7,8 +7,14 @@ import com.codingbattle.backend.model.User;
 import com.codingbattle.backend.repository.MatchRepo;
 import com.codingbattle.backend.repository.ProblemRepo;
 import com.codingbattle.backend.repository.UserRepo;
+import com.codingbattle.backend.dto.MatchDTO.MatchProblemResponseDTO;
+import com.codingbattle.backend.dto.Problem.ProblemMapper;
+
+import com.codingbattle.backend.model.Problem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
@@ -18,15 +24,16 @@ public class MatchService {
     private final UserRepo userRepo;
     private final ProblemRepo problemRepo;
     private final MatchMapper matchMapper;
-
+    private final ProblemMapper problemMapper;
     private final ConcurrentLinkedQueue<String> waitingQueue = new ConcurrentLinkedQueue<>();
 
     @Autowired
-    public MatchService(MatchRepo matchRepository, UserRepo userRepo, ProblemRepo problemRepo, MatchMapper matchMapper) {
+    public MatchService(MatchRepo matchRepository, UserRepo userRepo, ProblemRepo problemRepo, MatchMapper matchMapper, ProblemMapper problemMapper) {
         this.matchRepository = matchRepository;
         this.userRepo = userRepo;
         this.problemRepo = problemRepo;
         this.matchMapper = matchMapper;
+        this.problemMapper = problemMapper;
     }
 
     /**
@@ -89,5 +96,17 @@ public class MatchService {
 
         System.out.println("Created match: " + match.getId() + " for users " + username1 + " and " + username2);
         return matchMapper.toDTO(match);
+    }
+
+    public MatchProblemResponseDTO getMatchById(UUID matchID) {
+        Match match = matchRepository.findById(matchID).orElse(null);
+        if (match == null) return null;
+        Problem problem = match.getProblem();
+        MatchProblemResponseDTO dto = new MatchProblemResponseDTO();
+        dto.setMatchId(match.getId());
+        dto.setPlayer1Id(match.getUser1().getId());
+        dto.setPlayer2Id(match.getUser2().getId());
+        dto.setProblem(problemMapper.toDTO(problem));
+        return dto;
     }
 }

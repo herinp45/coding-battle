@@ -38,7 +38,7 @@ public class ProblemMapper {
 
     public ProblemResponseDTO toDTO(Problem problem) {
         ProblemResponseDTO dto = new ProblemResponseDTO();
-        dto.setId(problem.getId().toString());
+        dto.setId(problem.getId());
         dto.setTitle(problem.getTitle());
         dto.setDescription(problem.getDescription());
         dto.setDifficulty(problem.getDifficulty());
