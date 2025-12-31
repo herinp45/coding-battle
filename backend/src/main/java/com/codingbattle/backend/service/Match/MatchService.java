@@ -84,7 +84,7 @@ public class MatchService {
             return null;
         }
 
-        var problem = problemRepo.findAll().stream().findAny().orElse(null);
+        var problem = problemRepo.findRandomProblem();
         if (problem == null) {
             waitingQueue.add(username1);
             waitingQueue.add(username2);

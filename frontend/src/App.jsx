@@ -6,6 +6,7 @@ import Register from "./pages/Register.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import Home from "./pages/Home.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import MatchPage from "./pages/MatchPage.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +23,11 @@ function App() {
                             <Home/>
                         </PrivateRoute>
                     }/>
+                    <Route path={"/match/:matchID"} element={
+                        <PrivateRoute>
+                            <MatchPage/>
+                        </PrivateRoute>
+                    } />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
