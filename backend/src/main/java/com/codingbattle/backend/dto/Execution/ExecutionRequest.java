@@ -1,4 +1,4 @@
-package com.codingbattle.backend.model;
+package com.codingbattle.backend.dto.Execution;
 
 public class ExecutionRequest {
     private String code;
