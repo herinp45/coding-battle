@@ -1,12 +1,18 @@
 package com.codingbattle.backend.service;
 
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@Service
 public class ExecutionService {
     private static final int TIMEOUT_SECONDS = 3;
+
+    public ExecutionService() {
+    }
 
     /**
      * Runs Python code in a Docker container.
