@@ -27,11 +27,13 @@ export default function MatchPage() {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setMatchData(response.data);
-            } catch (err) {
+            }
+            catch (err) {
                 setAlertMessage(err.response?.data?.error || "Failed to fetch match");
                 setAlertType("error");
                 if (err.response?.status === 401) logout();
-            } finally {
+            }
+            finally {
                 setLoading(false);
             }
         };
@@ -43,10 +45,20 @@ export default function MatchPage() {
         setOutput("Running code...");
         try {
             // API integration goes here
-            setOutput("Code executed successfully!\n\n(Output placeholder)");
-        } catch (err) {
+            const runResponse = await axios.post("/execution/run", {
+                language,
+                code,
+                input: matchData.problem.sampleInput,
+            }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(runResponse.data);
+            setOutput("Code executed successfully!\n\n" + runResponse.data.output);
+        }
+        catch (err) {
             setOutput(`Error: ${err.response?.data?.error || "Failed to run code"}`);
         }
+
     };
 
     const handleSubmit = async () => {
@@ -55,7 +67,8 @@ export default function MatchPage() {
         try {
             // API integration goes here
             setAlertMessage("Solution submitted successfully!");
-        } catch (err) {
+        }
+        catch (err) {
             setAlertMessage(err.response?.data?.error || "Failed to submit solution");
             setAlertType("error");
         }
