@@ -5,6 +5,7 @@ public class SubmissionResponseDTO {
     private int total;
     private boolean success;
 
+    // Constructors, getters, and setters
     public SubmissionResponseDTO() {
     }
 

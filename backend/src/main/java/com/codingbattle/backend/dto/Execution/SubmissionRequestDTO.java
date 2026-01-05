@@ -1,12 +1,13 @@
 package com.codingbattle.backend.dto.Execution;
 
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
 
 public class SubmissionRequestDTO {
     private UUID matchId;
     private String code;
     private String language;
 
+    // Constructors, getters, and setters
     public SubmissionRequestDTO() {
     }
 
