@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 @Service
 public class ExecutionService {
-    private static final int TIMEOUT_SECONDS = 3;
+    private static final int TIMEOUT_SECONDS = 5;
 
     public ExecutionService() {
     }
@@ -63,4 +63,3 @@ public class ExecutionService {
 
     }
 }
-
