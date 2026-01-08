@@ -63,9 +63,25 @@ export default function MatchPage() {
 
     const handleSubmit = async () => {
         setAlertMessage("Submitting solution...");
+        setOutput("Submitting solution...");
         setAlertType("success");
         try {
-            // API integration goes here
+            console.log("Submitting code:", { matchID, code, language });
+            const submitResponse = await axios.post(`/submissions/submit`, {
+                matchId: matchID,
+                code,
+                language
+            }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(submitResponse.data);
+            setOutput(
+                "Submission Result:\n\n" +
+                "Total Tests: " + submitResponse.data.total +
+                "\nPassed Tests: " + submitResponse.data.passed +
+                "\nStatus: " + (submitResponse.data.success ? "Passed" : "Some Failed")
+            );
+
             setAlertMessage("Solution submitted successfully!");
         }
         catch (err) {

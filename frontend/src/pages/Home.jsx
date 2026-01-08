@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import axios from "../axios/axios.js";
@@ -14,13 +14,18 @@ export default function Home() {
     const { token, logout } = useAuth();
     const navigate = useNavigate();
 
+    // Ref to store polling timeout
+    const pollingRef = useRef(null);
+
+    // Fetch user on mount
     useEffect(() => {
         if (!token) {
             navigate("/login");
             return;
         }
         fetchUserData();
-    }, [token, navigate]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token]);
 
     async function fetchUserData() {
         try {
@@ -40,11 +45,33 @@ export default function Home() {
         }
     }
 
-    // Toggle Join / Cancel Matchmaking
+    // Polling match status
+    async function poolMatchStatus() {
+        try {
+            const response = await axios.get('/matches/status', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.data) {
+                setAlertMessage("Match found! Redirecting...");
+                setAlertType("success");
+                navigate(`/match/${response.data.id}`);
+            } else {
+                pollingRef.current = setTimeout(poolMatchStatus, 3000); // Poll every 3 seconds
+            }
+        } catch (error) {
+            setAlertMessage("Error checking match status.");
+            setAlertType("error");
+            setIsMatching(false);
+        }
+    }
+
+    // Handle join/cancel matchmaking
     async function handleJoinMatch() {
         if (isMatching) {
             // Cancel matchmaking
             try {
+                clearTimeout(pollingRef.current);
                 await axios.post('/matches/leave', {}, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -66,32 +93,32 @@ export default function Home() {
             const response = await axios.post('/matches/join', {}, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-
+            console.log("Join match response:", response.data);
             if (!response.data) {
                 setAlertMessage("Waiting for an opponent...");
                 setAlertType("info");
+                poolMatchStatus();
             }
             else {
                 setAlertMessage("Match found! Redirecting...");
                 setAlertType("success");
-                console.log(response.data);
                 navigate(`/match/${response.data.id}`);
             }
-        }
-        catch (error) {
+        } catch (error) {
             setAlertMessage(error.response?.data?.error || "Error joining match.");
             setAlertType("error");
             setIsMatching(false);
         }
     }
 
-    // Auto-leave queue on reload/unmount
+    // Auto-leave queue and clear timers on unmount
     useEffect(() => {
         return () => {
+            clearTimeout(pollingRef.current);
             if (isMatching) {
                 axios.post('/matches/leave', {}, {
                     headers: { 'Authorization': `Bearer ${token}` }
-                });
+                }).catch(() => {}); // ignore errors on unmount
             }
         };
     }, [isMatching, token]);
@@ -112,7 +139,13 @@ export default function Home() {
     return (
         <div className="min-h-screen bg-black text-white relative overflow-hidden">
             {/* Alert */}
-            {alertMessage && <Alert type={alertType} message={alertMessage} onClose={() => setAlertMessage("")} />}
+            {alertMessage && (
+                <Alert
+                    type={alertType}
+                    message={alertMessage}
+                    onClose={() => setAlertMessage("")}
+                />
+            )}
 
             {/* Header */}
             <header className="relative z-10 border-b border-yellow-500/30 bg-black/50 backdrop-blur-sm">
@@ -163,7 +196,9 @@ export default function Home() {
                 </div>
 
                 {/* Join / Cancel Match Section */}
-                <div className="bg-black/50 border border-yellow-500/30 rounded-2xl shadow-xl p-8 md:p-12 backdrop-blur-sm max-w-2xl mx-auto mb-12">
+                <div
+                    className="bg-black/50 border border-yellow-500/30 rounded-2xl shadow-xl p-8 md:p-12 backdrop-blur-sm max-w-2xl mx-auto mb-12"
+                >
                     <h3 className="text-3xl font-semibold mb-4 text-center text-yellow-300">
                         Ready to Battle?
                     </h3>

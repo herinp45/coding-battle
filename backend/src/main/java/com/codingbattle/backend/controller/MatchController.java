@@ -49,4 +49,13 @@ public class MatchController {
         matchService.leaveQueue(username);
         return ResponseEntity.noContent().build();
     }
+
+    // Check Status of Active Match
+    @GetMapping("/status")
+    public ResponseEntity<MatchResponseDTO> getActiveMatch() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        MatchResponseDTO activeMatch = matchService.getMatchStatus(username);
+        return ResponseEntity.ok(activeMatch);
+    }
 }

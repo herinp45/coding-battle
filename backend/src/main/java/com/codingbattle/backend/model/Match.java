@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
 
+
 @Entity
 @Table(name = "matches")
 public class Match {
@@ -26,14 +27,15 @@ public class Match {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "winner_id")
-    private User winner;
+    private User winner ;
 
     @Column(name = "started_at", nullable = false, updatable = false)
     private Instant startedAt = Instant.now();
 
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MatchStatus status = MatchStatus.WAITING;
 
-
-    // ===== Constructors =====
     public Match() {}
 
     public Match(UUID id, Problem problem, User user1, User user2, User winner, Instant startedAt) {
@@ -71,4 +73,12 @@ public class Match {
     public Instant getStartedAt() { return startedAt; }
     public void setStartedAt(Instant startedAt) { this.startedAt = startedAt; }
 
+    public MatchStatus getStatus() {
+        return status;
+    }
+    public void setStatus(MatchStatus status) {
+        this.status = status;
+    }
+
 }
+
